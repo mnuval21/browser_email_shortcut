@@ -1,0 +1,27 @@
+{
+  "background": {
+     "scripts": [ "background.js" ]
+  },
+  "browser_action": {
+     "default_icon": "images/20circle_mail.png",
+     "default_title": "Send this link with Gmail"
+  },
+  "content_scripts": [ {
+     "all_frames": true,
+     "js": [ "browser_email.js" ],
+     "matches": [ "http://*/*", "https://*/*" ]
+  } ],
+  "description": "Makes Gmail your default email application and provides a button to compose a Gmail message to quickly share a link via email",
+  "icons": {
+     "128": "images/128circle_mail.png",
+     "16": "images/16circle_mail.png",
+     "32": "images/32circle_mail.png",
+     "64": "images/64circle_mail.png"
+  },
+  "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDEbpC6xVrnpwMX7JcommrPGp06qF9/Avm++6lhyDBqMZCItyP00PKdfkGzEU/9RQYlFwbkD/7nD3BvK+hpUDNn+Gv53cexm3ZmvD67GgWSD+bUu/iUcYxTaQ5q6spUpPHUVWA2cjhZLJRYR7QCnVWGVqjEg43PcPfaj1rSS9hliQIDAQAB",
+  "manifest_version": 2,
+  "name": "Browser Email Shortcut",
+  
+  "permissions": [ "tabs", "http://*/*", "https://*/*", "http://*.google.com/" ],
+  "version": "1.0"
+}
