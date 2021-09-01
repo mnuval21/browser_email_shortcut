@@ -1,20 +1,18 @@
 
 //compose window url
-var baseGmailUrl = "https://mail.google.com/";
-var gmailUrlSuffix = "mail/?view=cm&fs=1&tf=1";
+var baselUrl = "https://mail.google.com/";
+var urlSuffix = "mail/?view=cm&fs=1&tf=1";
 
-function makeGmailDomainUrl() {
-  var gmailUrl = baseGmailUrl;
+function createGmailUrl() {
+  var url = baselUrl;
   var domainName = window.localStorage["domainName"];
   if (domainName) {
-    gmailUrl += "a/" + domainName + "/";
+    url += "a/" + domainName + "/";
   }
-    return gmailUrl + gmailUrlSuffix;
+    return url + urlSuffix;
 }
 
-
-var title = '';
-var url = '';
+//For selected text in body?
 var selectedText = '';
 
 
@@ -23,7 +21,7 @@ chrome.extension.onConnect.addListener(
     if (port.name == "GmailUrlConn") {
       port.onMessage.addListener(function(msg) {
       if (msg.req == "GmailUrlPlease") {
-        port.postMessage({gmailDomainUrl: makeGmailDomainUrl()});
+        port.postMessage({gmailDomainUrl: createGmailUrl()});
       } else {
         console.log("Unsupported req on valid port");
       }
@@ -34,7 +32,7 @@ chrome.extension.onConnect.addListener(
 chrome.extension.onRequest.addListener(
   function(connectionInfo) {
     selectedText = connectionInfo;
-    makeGmailWin(selectedText);
+    gmailWin(selectedText);
 });
 
 
@@ -45,15 +43,21 @@ chrome.browserAction.onClicked.addListener(
     url = tab.url;
 });
 
-function makeGmailWin(summary) {
+function gmailWin(summary) {
   var body = '';
-  var gmailURL = makeGmailDomainUrl() +
+  if (summary == '') {
+    body = url;
+  } else {
+    body = summary + "\n" + url
+    ;
+  }
+  var gmailURL = createGmailUrl() +
                  "&body=" + encodeURIComponent(body);
   chrome.windows.create({
     url: gmailURL,
     left: 20,
     top: 30,
-    width: 700,
-    height: 600
+    width: 600,
+    height: 500
     });
 }
